@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data analysis workbench · Hossein Basereh</title>
+<meta name="description" content="Exploratory data analysis in the browser, after SYS-930: load a CSV and get summary statistics, distributions, rankings, trends and a correlation heatmap. Your data never leaves your computer.">
+<meta name="author" content="Hossein Basereh">
+<meta name="theme-color" content="#07122a">
+<meta property="og:title" content="Data analysis workbench · Hossein Basereh">
+<meta property="og:description" content="Exploratory data analysis in the browser, after SYS-930: load a CSV and get summary statistics, distributions, rankings, trends and a correlation heatmap. Your data never leaves your computer.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<script>try{var t=localStorage.getItem('hb-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body data-accent="green">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-maut" viewBox="0 0 24 24"><path d="M12 3.5v16.5M7.5 20h9M4.5 7h15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4.5 7l-2.6 6.2h5.2zM19.5 7l-2.6 6.2h5.2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-stats" viewBox="0 0 24 24"><path d="M3 19.5h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M3.5 18.5c3.4 0 4.6-12 8.5-12s5.1 12 8.5 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-data" viewBox="0 0 24 24"><path d="M3 20h18M6 20v-8M11 20V5M16 20v-6M20 20V9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-ml" viewBox="0 0 24 24"><path d="M6 6l6 6M6 18l6-6M12 12l6-6M12 12l6 6" stroke="currentColor" stroke-width="1.6"/><circle cx="5" cy="6" r="2.4" fill="currentColor"/><circle cx="5" cy="18" r="2.4" fill="currentColor"/><circle cx="12" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="19" cy="6" r="2.4" fill="currentColor"/><circle cx="19" cy="18" r="2.4" fill="currentColor"/></symbol>
+  <symbol id="i-beam" viewBox="0 0 24 24"><path d="M5 5h14M5 19h14M12 5v14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="M8.5 7L3.5 12l5 5M15.5 7l5 5-5 5M13.5 4.5l-3 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4.5h4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 15V4M7 9l5-5 5 5M5 20h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-dice" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="9" r="1.5" fill="currentColor"/><circle cx="15" cy="15" r="1.5" fill="currentColor"/><circle cx="15" cy="9" r="1.5" fill="currentColor"/><circle cx="9" cy="15" r="1.5" fill="currentColor"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 5l12 7-12 7z" fill="currentColor"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+</svg>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav ink">
+  <div class="wrap">
+    <a class="brand" href="https://github.com/hossbh" aria-label="Hossein Basereh on GitHub">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect x=".5" y=".5" width="31" height="31" rx="7.5" fill="#0e2a5c" stroke="#2a4576"/><path d="M7.5 7v13M7.5 13.5H13M13 7v13M17 7h3.8a3.1 3.1 0 0 1 0 6.2H17M17 13.2h4.3a3.4 3.4 0 0 1 0 6.8H17V7" fill="none" stroke="#fff" stroke-width="2.1" stroke-linejoin="round"/><path d="M7 25.5h5.5" stroke="#3fcff0" stroke-width="2.4"/><path d="M13.25 25.5h5.5" stroke="#f5bb46" stroke-width="2.4"/><path d="M19.5 25.5H25" stroke="#ff7f5e" stroke-width="2.4"/></svg>
+      <span class="brand-name"><b>Hossein Basereh</b><small>Projects</small></span>
+    </a>
+    <nav class="links" id="siteLinks" aria-label="On this page">
+      <a href="#findings">Findings</a>
+      <a href="#explore">Explore a CSV</a>
+      <a href="#notebooks">Notebooks</a>
+      <div class="m-only">
+        <a href="https://hossbh.github.io/MAUT/">MAUT decision model</a>
+        <a href="https://hossbh.github.io/Probability-and-Statistics_SYS-501/">Probability & statistics</a>
+        <a href="https://hossbh.github.io/Applied-Machine-Learning_AAI-695/">Applied machine learning</a>
+        <a href="https://beamworkbench.com">Engineering workbenches</a>
+        <a href="https://github.com/hossbh/Data-Analysis_SYS-930">Source on GitHub</a>
+      </div>
+    </nav>
+    <div class="nav-tools">
+      <button class="icon-btn theme-btn" id="themeBtn" type="button" data-mode="auto" aria-label="Theme: follow system. Click to change." title="Theme: follow system">
+        <svg class="t-auto" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>
+        <svg class="t-light" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="t-dark" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+      <a class="icon-btn" href="https://github.com/hossbh/Data-Analysis_SYS-930" title="Source on GitHub" aria-label="Source on GitHub"><svg class="" aria-hidden="true"><use href="#i-code"/></svg></a>
+      <details class="launch">
+        <summary class="btn sm">Projects <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg></summary>
+        <div class="menu">
+          <div class="grp">Projects</div>
+          <a href="https://hossbh.github.io/MAUT/" style="--c:var(--violet)"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-maut"/></svg></span><b>MAUT decision model</b><span class="sub">Criteria, weights and Monte Carlo ranking</span></a>
+          <a href="https://hossbh.github.io/Probability-and-Statistics_SYS-501/" style="--c:var(--cyan)"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-stats"/></svg></span><b>Probability & statistics</b><span class="sub">Distributions, simulation and tests</span></a>
+          <a href="https://hossbh.github.io/Data-Analysis_SYS-930/" style="--c:var(--green)" aria-current="page"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-data"/></svg></span><b>Data analysis</b><span class="sub">Exploratory analysis in the browser</span></a>
+          <a href="https://hossbh.github.io/Applied-Machine-Learning_AAI-695/" style="--c:var(--ember)"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-ml"/></svg></span><b>Applied machine learning</b><span class="sub">Regression, gradient descent, K-means</span></a>
+          <div class="grp">Engineering</div>
+          <a href="https://beamworkbench.com" style="--c:var(--cyan)"><span class="ic"><svg class="i" aria-hidden="true"><use href="#i-beam"/></svg></span><b>Beam · Bolt · Weld workbenches</b><span class="sub">beamworkbench.com</span></a>
+        </div>
+      </details>
+      <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="siteLinks">
+        <svg class="bars" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <svg class="x" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<style>
+  :root { --neg: #e34948; }
+  :root[data-theme="dark"] { --neg: #e66767; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --neg: #e66767; } }
+  .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+  .drop { display: grid; place-items: center; gap: 10px; padding: 34px 20px; border-radius: 14px; border: 2px dashed var(--line-2); background: var(--panel-2); text-align: center; transition: border-color .15s, background-color .15s; }
+  .drop.over { border-color: var(--acc); background: color-mix(in srgb, var(--acc) 8%, var(--panel-2)); }
+  .drop b { font: 700 18px var(--f-head); }
+  .drop p { margin: 0; color: var(--ink-3); font-size: 14px; }
+  .drop .cta { justify-content: center; }
+  .ds-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin: 22px 0 14px; }
+  .ds-head h3 { margin: 0; }
+  .pill-note { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line-2); font-size: 12.5px; color: var(--ink-2); }
+  .prof td, .prof th { white-space: nowrap; }
+  .prof .ty { font: 500 11px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+  .ctrls { display: flex; flex-wrap: wrap; align-items: end; gap: 12px 16px; margin-bottom: 16px; }
+  .ctrls .field { min-width: 160px; }
+  .heat { display: grid; gap: 2px; font: 500 11.5px var(--f-mono); }
+  .heat div { display: grid; place-items: center; min-height: 34px; padding: 2px; border-radius: 4px; color: var(--ink); text-align: center; }
+  .heat .hd { color: var(--ink-3); font: 500 11px var(--f-mono); justify-items: end; place-items: center end; padding-right: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .heat .hd.top { place-items: end center; padding: 0 0 4px; }
+  .heat .on-dark { color: #fff; }
+  .scale { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 12px; color: var(--ink-3); }
+  .scale i { flex: 1; max-width: 240px; height: 8px; border-radius: 4px; background: linear-gradient(90deg, var(--neg), var(--panel-2), var(--s1)); }
+  .box-cap { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 6px 0 0; font: 500 12px var(--f-mono); color: var(--ink-3); }
+  [hidden] { display: none !important; }
+  @media (max-width: 1000px) { .two { grid-template-columns: minmax(0, 1fr); } }
+</style>
+
+<section class="hero ink">
+  <div class="wrap">
+    <div>
+      <p class="crumb"><b>SYS-930</b> Decision making via data analysis</p>
+      <h1>Turn a table into<br><span class="hl">evidence for a decision.</span></h1>
+      <p class="lede">My exploratory analyses of New Jersey's county populations and a decade of the Texas housing market, and a tool that runs the same analysis on any CSV you drop in: summary statistics, distributions, rankings, trends, relationships and correlations. Your file is read in your browser and never uploaded.</p>
+      <div class="cta"><a class="btn acc" href="#explore">Explore a CSV <span class="arr" aria-hidden="true">→</span></a><a class="btn ghost" href="#findings">See the findings</a></div>
+      <ul class="facts"><li>pandas · seaborn · GeoPandas</li><li>Descriptive statistics</li><li>Choropleth</li><li>Correlation</li></ul>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><div><h3>At a glance</h3><p>From the notebooks' outputs</p></div></div>
+      <div class="panel-b">
+        <div class="stats">
+          <div class="stat"><b>21</b><span>New Jersey counties mapped</span></div>
+          <div class="stat"><b>905 K</b><span>Bergen, the largest county</span></div>
+          <div class="stat"><b>5,040</b><span>monthly Texas city records</span></div>
+          <div class="stat"><b>$128 K</b><span>median monthly average price</span></div>
+        </div>
+      </div>
+      <div class="panel-f">Texas records run from January 2000 to April 2009.</div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="findings">
+  <div class="wrap">
+    <div class="rv"><p class="kicker">Findings</p><h2>What the two datasets show</h2><p class="sub">The summaries below come straight from the notebooks' outputs. The datasets themselves are not in the repository, so the charts are drawn from those published statistics.</p></div>
+    <div class="two">
+      <div class="panel">
+        <div class="panel-h"><div><h3>New Jersey population by county</h3><p>2010 census counts for the 21 counties · notebook 01</p></div></div>
+        <div class="panel-b">
+          <div id="njBox"></div>
+          <div class="box-cap"><span>min 66,083</span><span>Q1 156,898</span><span>median 448,734</span><span>Q3 576,567</span><span>max 905,116</span></div>
+          <div class="kv" style="margin-top:16px"><div><span class="k">Mean</span><div class="v">418,662</div></div><div><span class="k">Std dev</span><div class="v">252,392</div></div><div><span class="k">Largest</span><div class="v">Bergen</div></div></div>
+          <p class="chart-cap" style="margin-top:14px">Half the counties have between 157 K and 577 K people. The mean sits below the median: a group of small counties pulls it down. The notebook also maps the counts as a choropleth, joining the census table to the county boundaries with GeoPandas.</p>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><div><h3>Texas housing market, 2000–2009</h3><p>5,040 monthly city records · notebook 02</p></div></div>
+        <div class="panel-b">
+          <div id="txBox"></div>
+          <div class="box-cap"><span>min $26.7 K</span><span>Q1 $107.8 K</span><span>median $128.5 K</span><span>Q3 $162.9 K</span><span>max $285.3 K</span></div>
+          <h4 style="margin:20px 0 6px;font:600 14px var(--f-ui)">Completeness of each column</h4>
+          <div id="txMissing"></div>
+          <p class="chart-cap">A quarter of the months have no listings or time-on-market figures, so the notebook cleans the data before charting the trends.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="explore">
+  <div class="wrap">
+    <div class="rv"><p class="kicker">Explore a CSV</p><h2>The same analysis, on your data</h2><p class="sub">Drop in any comma-separated file with a header row: a county table, monthly sales, survey results. The tool profiles every column and lets you chart distributions, rankings, trends, relationships and correlations, the steps of the notebooks.</p></div>
+    <div class="drop" id="drop">
+      <svg class="i" style="width:34px;height:34px;color:var(--acc)" aria-hidden="true"><use href="#i-file"/></svg>
+      <b>Drop a CSV file here</b>
+      <p>Read in your browser and never uploaded. Up to about 20 MB.</p>
+      <div class="cta"><label class="btn acc sm" for="file"><svg class="i" aria-hidden="true"><use href="#i-up"/></svg>Choose a file</label><button class="btn ghost sm" type="button" id="bSample">Try a synthetic sample</button></div>
+      <input type="file" id="file" accept=".csv,text/csv,.txt" hidden>
+      <p id="loadMsg" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="ds" hidden>
+      <div class="ds-head"><h3 id="dsName"></h3><span class="pill-note" id="dsNote"></span></div>
+      <div class="kv" id="dsKv"></div>
+      <div class="panel" style="margin-top:16px">
+        <div class="panel-h"><div><h3>Column profile</h3><p>Every column, with its type, completeness and summary statistics</p></div></div>
+        <div class="panel-b"><div class="tbl-wrap"><table class="tbl prof" id="prof"></table></div></div>
+      </div>
+      <div class="panel" style="margin-top:16px">
+        <div class="panel-h">
+          <div class="tabs" role="tablist" aria-label="Charts">
+            <button class="tab" role="tab" aria-selected="true" aria-controls="c-dist" id="ct-dist">Distribution</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="c-rank" id="ct-rank">Ranking</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="c-trend" id="ct-trend">Trend</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="c-rel" id="ct-rel">Relationship</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="c-corr" id="ct-corr">Correlation</button>
+          </div>
+        </div>
+        <div class="panel-b">
+          <div class="tabpanel on" role="tabpanel" id="c-dist" aria-labelledby="ct-dist">
+            <div class="ctrls"><div class="field"><label for="dCol">Column</label><select class="in" id="dCol"></select></div><div class="field" style="min-width:220px"><label for="dBins">Bins <output id="dBinsO">20</output></label><input type="range" id="dBins" min="5" max="60" step="1" value="20"></div></div>
+            <div id="distChart"></div><p class="chart-cap" id="distCap"></p>
+          </div>
+          <div class="tabpanel" role="tabpanel" id="c-rank" aria-labelledby="ct-rank">
+            <div class="ctrls"><div class="field"><label for="rCat">Group by</label><select class="in" id="rCat"></select></div><div class="field"><label for="rVal">Value</label><select class="in" id="rVal"></select></div><div class="field"><label for="rAgg">Summary</label><select class="in" id="rAgg"><option value="mean">Mean</option><option value="median">Median</option><option value="sum">Sum</option><option value="count">Count of rows</option></select></div><div class="field"><label for="rShow">Show</label><select class="in" id="rShow"><option value="top">Top 10</option><option value="bottom">Bottom 10</option><option value="both">Top and bottom 5</option><option value="all">All (up to 40)</option></select></div></div>
+            <div id="rankChart"></div>
+          </div>
+          <div class="tabpanel" role="tabpanel" id="c-trend" aria-labelledby="ct-trend">
+            <div class="ctrls"><div class="field"><label for="tX">Over</label><select class="in" id="tX"></select></div><div class="field"><label for="tY">Value</label><select class="in" id="tY"></select></div><div class="field"><label for="tAgg">Summary</label><select class="in" id="tAgg"><option value="mean">Mean</option><option value="median">Median</option><option value="sum">Sum</option></select></div></div>
+            <div id="trendChart"></div><p class="chart-cap" id="trendCap"></p>
+          </div>
+          <div class="tabpanel" role="tabpanel" id="c-rel" aria-labelledby="ct-rel">
+            <div class="ctrls"><div class="field"><label for="sX">x</label><select class="in" id="sX"></select></div><div class="field"><label for="sY">y</label><select class="in" id="sY"></select></div></div>
+            <div id="relChart"></div><p class="chart-cap" id="relCap"></p>
+          </div>
+          <div class="tabpanel" role="tabpanel" id="c-corr" aria-labelledby="ct-corr">
+            <div id="heat"></div>
+            <div class="scale"><span>−1</span><i></i><span>+1</span><span style="margin-left:8px">Pearson correlation of each pair of numeric columns</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="notebooks">
+  <div class="wrap">
+    <div class="rv"><p class="kicker">The notebooks</p><h2>Two analyses</h2><p class="sub">Graduate coursework in decision making via data analysis. The datasets are not included in the repository; the README lists the files each notebook needs.</p></div>
+    <div class="grid">
+      <a class="card rv" href="https://github.com/hossbh/Data-Analysis_SYS-930/blob/main/01_NJpop.ipynb"><span class="tag">01 · Census</span><h3>New Jersey population by county</h3><p>Descriptive statistics, a ranked bar chart, a distribution histogram and a choropleth map built by joining census data to county boundaries with GeoPandas.</p><div class="res"><b>Key result:</b> county populations range from about 66 K to 905 K (Bergen County), with a median of about 449 K.</div><span class="go">Open on GitHub →</span></a>
+      <a class="card rv" href="https://github.com/hossbh/Data-Analysis_SYS-930/blob/main/02_tx-house-sales.ipynb"><span class="tag">02 · Housing</span><h3>Texas housing market analysis</h3><p>Data cleaning, distributions, yearly trends, price by year, city rankings, listing–sales relationships and a correlation heatmap.</p><div class="res"><b>Key result:</b> shows how sales, volume and average price move together over time, and which cities are most and least expensive.</div><span class="go">Open on GitHub →</span></a>
+    </div>
+    <p class="muted" style="font-size:14px;margin-top:24px">Shared as a portfolio of applied analysis. If you are taking a similar course, please follow your institution's academic-integrity policy. Assignment prompts and third-party datasets remain the property of their original authors.</p>
+  </div>
+</section>
+</main>
+
+<footer class="site ink">
+  <div class="wrap f-top">
+    <div class="f-brand">
+      <a class="brand" href="https://github.com/hossbh"><svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect x=".5" y=".5" width="31" height="31" rx="7.5" fill="#0e2a5c" stroke="#2a4576"/><path d="M7.5 7v13M7.5 13.5H13M13 7v13M17 7h3.8a3.1 3.1 0 0 1 0 6.2H17M17 13.2h4.3a3.4 3.4 0 0 1 0 6.8H17V7" fill="none" stroke="#fff" stroke-width="2.1" stroke-linejoin="round"/><path d="M7 25.5h5.5" stroke="#3fcff0" stroke-width="2.4"/><path d="M13.25 25.5h5.5" stroke="#f5bb46" stroke-width="2.4"/><path d="M19.5 25.5H25" stroke="#ff7f5e" stroke-width="2.4"/></svg><span class="brand-name"><b>Hossein Basereh</b><small>Projects</small></span></a>
+      <p>Graduate coursework and engineering projects, shared as interactive pages. Each one is worked from first principles, with the notebooks on GitHub.</p>
+    </div>
+    <nav aria-label="Projects"><b>Projects</b><a href="https://hossbh.github.io/MAUT/">MAUT decision model</a><a href="https://hossbh.github.io/Probability-and-Statistics_SYS-501/">Probability & statistics</a><a href="https://hossbh.github.io/Data-Analysis_SYS-930/">Data analysis</a><a href="https://hossbh.github.io/Applied-Machine-Learning_AAI-695/">Applied machine learning</a></nav>
+    <nav aria-label="This project"><b>This project</b><a href="https://github.com/hossbh/Data-Analysis_SYS-930">Source on GitHub</a><a href="https://github.com/hossbh/Data-Analysis_SYS-930/blob/main/LICENSE">MIT License</a><a href="https://github.com/hossbh/Data-Analysis_SYS-930#readme">README</a></nav>
+    <nav aria-label="Elsewhere"><b>Elsewhere</b><a href="https://github.com/hossbh">GitHub profile</a><a href="https://beamworkbench.com">Engineering workbenches</a></nav>
+  </div>
+  <div class="wrap f-base"><span>© 2023–2026 Hossein Basereh · Code under the MIT License</span><span class="mono">Data analysis</span></div>
+</footer>
+<script src="assets/kit.js"></script>
+<script src="assets/page.js"></script>
+</body>
+</html>
