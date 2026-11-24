@@ -1,5 +1,11 @@
 # Decision Making via Data Analysis (SYS-930)
 
+<!-- live-page:start -->
+<p align="center"><a href="https://hossbh.github.io/Data-Analysis_SYS-930/"><img src="docs/assets/readme-banner.svg" width="100%" alt="Open the data analysis workbench: https://hossbh.github.io/Data-Analysis_SYS-930/"></a></p>
+
+<p align="center"><b>▶ Live interactive page: <a href="https://hossbh.github.io/Data-Analysis_SYS-930/">hossbh.github.io/Data-Analysis_SYS-930</a></b></p>
+<!-- live-page:end -->
+
 Exploratory data analysis projects that turn raw public data into clear visual evidence for decisions: population patterns across New Jersey and two decades of the Texas housing market.
 
 ## Notebooks
